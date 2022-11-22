@@ -1,0 +1,35 @@
+.balance-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #ecfccb;
+    width: 100%;
+    border: 1px solid #84cc16;
+    border-radius: 16px;
+    margin-bottom: 16px;
+  }
+  .details-img {
+    width: 64px;
+    height: 64px;
+    margin: 24px;
+  }
+  .income-container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #cffafe;
+    border: 1px solid #06b6d4;
+    border-radius: 16px;
+    margin-bottom: 16px;
+  }
+  .expenses-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #ede9fe;
+    width: 100%;
+    min-width: 200px;
+    border: 1px solid #7c3aed;
+    border-radius: 16px;
+    margin-bottom: 16px;
+  }

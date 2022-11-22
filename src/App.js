@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import { createContext, useState } from "react";
+import "./App.css";
+import History from "./components/History/History";
+import MoneyDetails from "./components/MoneyDetails/MoneyDetails";
+import Navbar from "./components/Navbar/Navbar";
+
+export const TransContext = createContext();
 
 function App() {
+  const [trans, setTrans] = useState([]);
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <TransContext.Provider value={{trans,setTrans}}>
+        <Navbar />
+        <MoneyDetails />
+        <History />
+      </TransContext.Provider>
     </div>
   );
 }
