@@ -8,7 +8,8 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import { TransContext } from "../../App";
 
-const api = "https://prathipan-money-manager.herokuapp.com"
+const api = "http://localhost:3003"
+// https://prathipan-money-manager.herokuapp.com
 
 
 const style = {
