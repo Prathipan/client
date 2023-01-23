@@ -8,7 +8,11 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import { TransContext } from "../../App";
 
-const api = "https://money-manager-server.onrender.com/"
+const api = "https://money-manager-server.onrender.com"
+
+// "http://localhost:3003"
+
+// "https://money-manager-server.onrender.com/"
 
 
 const style = {
