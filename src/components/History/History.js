@@ -8,8 +8,7 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import { TransContext } from "../../App";
 
-const api = "http://localhost:3003"
-// https://prathipan-money-manager.herokuapp.com
+const api = "https://money-manager-server.onrender.com/"
 
 
 const style = {
@@ -93,7 +92,7 @@ const History = () => {
               {trans.map((tran) => {
                 return (
                   <tr key={tran._id}>
-                    <th scope="row">{trans.length}</th>
+                    <th scope="row">{tran._id}</th>
                     <td>{tran.name}</td>
                     <td>{tran.type}</td>
                     <td>{tran.amount}</td>

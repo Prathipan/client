@@ -1,3 +1,3 @@
-export const api = "https://61efbd81732d93001778e565.mockapi.io/money-manager"
+export const api = "https://money-manager-server.onrender.com/"
 
 // https://prathipan-money-manager.herokuapp.com
