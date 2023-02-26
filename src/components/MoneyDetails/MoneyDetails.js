@@ -1,11 +1,14 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
 import { TransContext } from '../../App';
 import './MoneyDetails.css'
 
 const MoneyDetails = () => {
 
-  const {trans,setTrans} = useContext(TransContext)
+  const trans = useSelector(state => state.trans)
+
+  // const {trans,setTrans} = useContext(TransContext)
 
   let [balance,setBalance] = useState(0);
   let [income,setIncome] = useState(0);

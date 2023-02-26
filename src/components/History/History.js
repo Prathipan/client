@@ -1,18 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./History.css";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { useFormik } from "formik";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "@mui/material";
-import axios from "axios";
-import { TransContext } from "../../App";
+import { useDispatch, useSelector } from "react-redux";
+import { createTrans, getTrans } from "../../redux/transRedux";
+import { userRequest } from "../../requestMethods";
 
-const api = "https://money-manager-server.onrender.com"
-
-// "http://localhost:3003"
-
-// "https://money-manager-server.onrender.com/"
 
 
 const style = {
@@ -28,9 +24,13 @@ const style = {
 };
 
 const History = () => {
+  const dispatch = useDispatch();
+  const transactions = useSelector(state => state.trans)
  
 
-  const {trans,setTrans} = useContext(TransContext);
+  console.log(transactions.trans);
+
+  // const {trans,setTrans} = useContext(TransContext);
  
 
   const [open, setOpen] = useState(false);
@@ -42,15 +42,14 @@ const History = () => {
   }, []);
 
   const getValues = async () => {
-    const response = await axios.get(
-      `${api}/transaction/get-data`
-    );
-    setTrans([...response.data]);
+   const values = await userRequest.get("/transaction/get-all");
+  //  console.log(values.data)
+   dispatch(getTrans(values.data))
   };
   
   const handleDelete = async (id) => {
-    await axios.delete(`${api}/transaction/trans/${id}`);
-    getValues();
+    // await axios.delete(`${api}/transaction/trans/${id}`);
+    // getValues();
   }
 
   const formik = useFormik({
@@ -62,10 +61,7 @@ const History = () => {
     },
     onSubmit: async (values,{resetForm}) => {
       // console.log(values);
-      await axios.post(
-        `${api}/transaction/create-trans`,
-        values
-      );
+      // dispatch(createTrans(values))
       handleClose();
       resetForm({values : ""})
       getValues();
@@ -93,7 +89,7 @@ const History = () => {
             </tr>
           </thead>
           <tbody>
-              {trans.map((tran) => {
+              {transactions.trans.map((tran) => {
                 return (
                   <tr key={tran._id}>
                     <th scope="row">{tran._id}</th>
