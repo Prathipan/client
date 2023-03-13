@@ -1,33 +1,29 @@
-
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { login } from "../../redux/apiCalls";
+import CryptoJS from "crypto-js";
 import "./register.css";
 
 const Login = () => {
-  const userDet = useSelector(state => state.user.currentUser);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [loginDetails, setLoginDetails] = useState({
     email: "",
     password: "",
   });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginDetails((prev) => {
       return { ...prev, [name]: value };
     });
   };
+
   const handleClick = async (e) => {
     e.preventDefault();
-    await login(dispatch,loginDetails);
-    setTimeout(()=>{
-      console.log(userDet);
-      // localStorage.setItem("token",userDet.accessToken)
-      // navigate("/main");
-    },5000);
-    // console.log(userDet.currentUser.accessToken)
+    const hashed_password = CryptoJS.AES.encrypt(JSON.stringify(loginDetails.password),"prathipan24p").toString();
+    loginDetails.password = hashed_password;
+    login(dispatch,loginDetails);
   };
   return (
     <div className="form-container">
@@ -49,6 +45,7 @@ const Login = () => {
           id="password"
           onChange={handleChange}
         />
+        <Link to="/register">Don't have an account?</Link>
         <button className="btn btn-primary mt-3" onClick={handleClick}>
           Login
         </button>

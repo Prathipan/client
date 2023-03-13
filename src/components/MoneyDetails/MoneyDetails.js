@@ -1,25 +1,18 @@
-import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
-import { TransContext } from '../../App';
+
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import './MoneyDetails.css'
 
 const MoneyDetails = () => {
 
-  const trans = useSelector(state => state.trans)
-
-  // const {trans,setTrans} = useContext(TransContext)
-
+  const transactions = useSelector(state => state.trans.trans);
+  // console.log(transactions)
   let [balance,setBalance] = useState(0);
   let [income,setIncome] = useState(0);
   let [expense,setExpense] = useState(0);
 
-  // useEffect( () => {
-  //    getValues();
-  // },[]);
-
   const getBalance = () => {
-    trans.map((tran) => {
+    transactions.map((tran) => {
       if(tran.type === "income")
       {
         income += tran.amount;

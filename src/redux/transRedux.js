@@ -8,7 +8,7 @@ const transSlice = createSlice({
     },
     reducers : {
         getTrans : (state,action) => {
-           state.trans = [...action.payload]
+           state.trans = action.payload
         },
         createTrans : (state,action) => {
             state.trans.push(action.payload);

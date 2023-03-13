@@ -6,10 +6,10 @@ import { useFormik } from "formik";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { createTrans, getTrans } from "../../redux/transRedux";
+import { createTrans, getTrans, removeTrans } from "../../redux/transRedux";
 import { userRequest } from "../../requestMethods";
-
-
+import MoneyDetails from "../MoneyDetails/MoneyDetails";
+import Navbar from "../Navbar/Navbar";
 
 const style = {
   position: "absolute",
@@ -25,13 +25,9 @@ const style = {
 
 const History = () => {
   const dispatch = useDispatch();
-  const transactions = useSelector(state => state.trans)
- 
-
-  console.log(transactions.trans);
-
-  // const {trans,setTrans} = useContext(TransContext);
- 
+  const transactions = useSelector((state) => state.trans.trans);
+  const userDet = useSelector(state => state.user.currentUser)
+  // console.log(transactions);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -39,18 +35,27 @@ const History = () => {
 
   useEffect(() => {
     getValues();
-  }, []);
+    // console.log(userDet.accessToken)
+  },[userDet]);
+
+
+  const handleDelete = async (id) => {
+    const values = userRequest.delete(`/transaction/trans/${id}`,{
+      headers : {token : userDet.accessToken}
+    });
+    const removableIndex = transactions.findIndex((trans) => trans._id == id);
+    console.log(removableIndex)
+    dispatch(
+      removeTrans({ removableIndex })
+    );
+  };
 
   const getValues = async () => {
-   const values = await userRequest.get("/transaction/get-all");
-  //  console.log(values.data)
-   dispatch(getTrans(values.data))
+    const values = await userRequest.get("/transaction/get-all",{
+      headers : {token : userDet.accessToken}
+    });
+    dispatch(getTrans(values.data));
   };
-  
-  const handleDelete = async (id) => {
-    // await axios.delete(`${api}/transaction/trans/${id}`);
-    // getValues();
-  }
 
   const formik = useFormik({
     initialValues: {
@@ -59,16 +64,22 @@ const History = () => {
       type: "",
       TransDate: "",
     },
-    onSubmit: async (values,{resetForm}) => {
-      // console.log(values);
-      // dispatch(createTrans(values))
+    onSubmit: async (values, { resetForm }) => {
+      const res = await userRequest.post("/transaction/create", values,{
+        headers : {token : userDet.accessToken}
+      });
+      // console.log(res)
+      dispatch(createTrans(res.data));
+      // getValues();
       handleClose();
-      resetForm({values : ""})
-      getValues();
+      resetForm({ values: "" });
     },
   });
 
   return (
+    <>
+    <Navbar />
+    <MoneyDetails />
     <div className="container">
       <div className="transaction-container">
         <div className="head">
@@ -89,22 +100,25 @@ const History = () => {
             </tr>
           </thead>
           <tbody>
-              {transactions.trans.map((tran) => {
-                return (
-                  <tr key={tran._id}>
-                    <th scope="row">{tran._id}</th>
-                    <td>{tran.name}</td>
-                    <td>{tran.type}</td>
-                    <td>{tran.amount}</td>
-                    <td>{tran.TransDate}</td>
-                    <td>
-                      <Button color="error" onClick={() => handleDelete(tran._id)}>
-                        <DeleteIcon />
-                      </Button>
-                    </td>
-                  </tr>
-                );
-              })}
+            {transactions.map((tran) => {
+              return (
+                <tr key={tran._id}>
+                  <th scope="row">{tran._id}</th>
+                  <td>{tran.name}</td>
+                  <td>{tran.type}</td>
+                  <td>{tran.amount}</td>
+                  <td>{tran.TransDate}</td>
+                  <td>
+                    <Button
+                      color="error"
+                      onClick={() => handleDelete(tran._id)}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         <div>
@@ -117,7 +131,7 @@ const History = () => {
             <Box sx={style}>
               <form onSubmit={formik.handleSubmit}>
                 <div>
-                  <label for="name">Name:</label>
+                  <label htmlFor="name">Name:</label>
                   <input
                     type="text"
                     id="name"
@@ -126,7 +140,7 @@ const History = () => {
                     onChange={formik.handleChange}
                     className="form-control"
                   />
-                  <label for="amount">Amount:</label>
+                  <label htmlFor="amount">Amount:</label>
                   <input
                     type="number"
                     id="amount"
@@ -135,7 +149,7 @@ const History = () => {
                     onChange={formik.handleChange}
                     className="form-control"
                   />
-                  <label for="type">Type:</label>
+                  <label htmlFor="type">Type:</label>
                   <select
                     id="type"
                     name="type"
@@ -147,7 +161,7 @@ const History = () => {
                     <option value="income">Income</option>
                     <option value="expense">Expense</option>
                   </select>
-                  <label for="date">Date:</label>
+                  <label htmlFor="date">Date:</label>
                   <input
                     className="form-control"
                     type="date"
@@ -168,6 +182,8 @@ const History = () => {
         </div>
       </div>
     </div>
+    </>
+    
   );
 };
 

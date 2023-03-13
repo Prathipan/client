@@ -1,31 +1,24 @@
-import { createContext, useState } from "react";
-import { Provider } from "react-redux";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { BrowserRouter as Router, Navigate, Route, Routes} from "react-router-dom";
 import "./App.css";
+import EmailVerify from "./components/EmailVerify/EmailVerify";
+import History from "./components/History/History";
 import Login from "./components/login/Login";
 import Register from "./components/login/Register";
-import Main from "./components/Main";
-import { store } from "./redux/store";
 
-// export const TransContext = createContext();
 
 function App() {
-  // const [trans, setTrans] = useState([]);
-
-
+  const user = useSelector(state => state.user.currentUser);
   return (
     <div className="container-fluid">
-      {/* <TransContext.Provider value={{trans,setTrans}}> */}
-      <Provider store={store}>
         <Router>
           <Routes>
-             <Route path="/" element={<Login />} />
+             <Route path="/" element={user ? <Navigate to="/main" /> :<Login />} />
              <Route path="/register" element={<Register />} />
-             <Route path="/main" element={<Main />} />
+             <Route path="/main" element={!user ? <Navigate to="/" /> : <History />} />
+             <Route path="/user/:id/verify/:token" element={<EmailVerify />}/>
           </Routes>
         </Router>
-        </Provider>
-      {/* </TransContext.Provider> */}
     </div>
   );
 }
