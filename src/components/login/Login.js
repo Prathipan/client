@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { login } from "../../redux/apiCalls";
 import CryptoJS from "crypto-js";
 import "./register.css";
 
 const Login = () => {
+  const loading = useSelector((state) => state.user.isFetching);
   const dispatch = useDispatch();
   const [loginDetails, setLoginDetails] = useState({
     email: "",
@@ -21,9 +22,12 @@ const Login = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const hashed_password = CryptoJS.AES.encrypt(JSON.stringify(loginDetails.password),"prathipan24p").toString();
+    const hashed_password = CryptoJS.AES.encrypt(
+      JSON.stringify(loginDetails.password),
+      "prathipan24p"
+    ).toString();
     loginDetails.password = hashed_password;
-    login(dispatch,loginDetails);
+    login(dispatch, loginDetails);
   };
   return (
     <div className="form-container">
@@ -46,9 +50,15 @@ const Login = () => {
           onChange={handleChange}
         />
         <Link to="/register">Don't have an account?</Link>
-        <button className="btn btn-primary mt-3" onClick={handleClick}>
-          Login
-        </button>
+        {loading ? (
+          <div className="spinner-border" role="status">
+            <span class="sr-only"></span>
+          </div>
+        ) : (
+          <button className="btn btn-primary mt-3" onClick={handleClick}>
+            Login
+          </button>
+        )}
       </form>
     </div>
   );

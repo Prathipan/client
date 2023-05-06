@@ -7,3 +7,18 @@
     display: flex;
     justify-content: space-between;
 }
+
+@media  screen and (max-width: 770px) {
+    .container{
+        font-size: 12px;
+    }
+}
+
+@media  screen and (max-width: 540px) {
+    .container{
+        font-size: 9px;
+    }
+    .table{
+        overflow: visible;
+    }
+}
