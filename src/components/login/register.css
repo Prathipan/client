@@ -2,6 +2,7 @@
     height: 100vh;
     width: 100%;
     background-image: url("../../assetes/background.jpg");
+    overflow: hidden;
     background-repeat: no-repeat;
     background-size: cover;
     display: flex;
