@@ -49,7 +49,7 @@ const Login = () => {
           id="password"
           onChange={handleChange}
         />
-        <Link to="/register">Don't have an account?</Link>
+        <Link to="/register" className="link">Don't have an account?</Link>
         {loading ? (
           <div className="spinner-border" role="status">
             <span class="sr-only"></span>

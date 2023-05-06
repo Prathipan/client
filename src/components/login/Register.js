@@ -71,7 +71,7 @@ const Register = () => {
           id="ConfirmPassword"
           onChange={handleChange}
         />
-        <Link to="/">Already having account ?</Link>
+        <Link to="/" className="link">Already having account ?</Link>
         {msg ? <span className="email-success">{msg}</span> : <></>}
         <button className="btn btn-primary mt-3" onClick={handleSubmit}>
           Signup
