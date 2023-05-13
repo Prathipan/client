@@ -33,6 +33,10 @@ const Login = () => {
     <div className="form-container">
       <form className="form-wrapper">
         <h2 className="formTitle">Login</h2>
+        <div className="credentials">
+        <span>Email : testUser@gmail.com</span>
+        <span>Password : 123456</span>
+        </div>
         <label htmlFor="email">Email</label>
         <input
           className="form-control"
